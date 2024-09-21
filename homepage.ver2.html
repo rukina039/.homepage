@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Portfolio</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #d3d3d3;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* ヘッダーの背景を暗くし、光沢感を強調 */
+        header {
+            background: linear-gradient(135deg, #1a2a33, #0c1b22);
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            border-bottom: 4px solid #1c3e50;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #b0b0b0, #e0e0e0, #ffffff, #c0c0c0, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+            background-size: 200% 200%;
+            animation: shine 11s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        nav {
+            background: linear-gradient(90deg, #1f2e3d, #1a252f);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1em;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+            text-decoration: underline;
+        }
+
+        .swiper-container {
+            width: 100%;
+            padding: 10px 0;
+            position: relative;
+        }
+
+        .swiper-slide {
+            width: 100%;
+            background-color: #fff;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .swiper-slide img,
+        .swiper-slide iframe {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        .swiper-slide iframe {
+            width: 100%;
+            height: 380px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .swiper-pagination {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .swiper-pagination-bullet {
+            background-color: #333;
+            opacity: 0.6;
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: #007bff;
+        }
+
+        section {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* プロフィールセクション */
+        .profile-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #2c3e50;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        .profile-section::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            z-index: -1;
+            border-radius: 8px;
+            background: linear-gradient(225deg, #2c3e50, #d3d3d3);
+        }
+
+        .profile-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-text {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .profile-text h2 {
+            font-size: 2em;
+            color: #2c3e50;
+        }
+
+        .profile-text p {
+            font-size: 1.3em;
+            margin-top: 2px;
+            color: #333;
+        }
+
+        .sns-links {
+            flex: 0.5;
+            text-align: left;
+            padding-left: 10px;
+            margin-left: 200px;
+            order: 2;
+        }
+
+        .sns-links .links-title {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .sns-links a {
+            display: block;
+            margin: 5px 0;
+            font-size: 1.3em;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .sns-links a:hover {
+            color: #007bff;
+        }
+
+        @media (max-width: 600px) {
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-image img {
+                margin-bottom: 20px;
+            }
+        }
+
+        .topics-section {
+            max-width: 1800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50, #d3d3d3);
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .topics-title {
+            font-size: 2.5em;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .topics-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .topics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
+            gap: 25px;
+        }
+
+        .topic {
+            background: linear-gradient(45deg, #2b4b64, #3a5c74, #4a7c94); 
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        .topic.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .topic:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .topic h3 {
+            font-size: 2em;
+            color: #000000;
+            margin-bottom: 15px;
+            position: relative;
+            background: linear-gradient(to right, #ecf0f1, #bdc3c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .topic h3::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #1a73e8, #0b47a1);
+            margin-top: 10px;
+        }
+
+        .topic p {
+            font-size: 1.3em;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .topic a {
+            font-size: 1.3em;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+
+        @media (max-width: 768px) {
+            .topics-container {
+                grid-template-columns: 1fr;
+            }
+
+            .topic {
+                padding: 20px;
+            }
+        }
+
+        .contact-section {
+            display: flex;
+            background-color: #2c3e50;
+            color: #fff;
+            max-width: 100%;
+            margin: 50px auto 0 auto;
+            padding: 0;
+            border-radius: 0px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .contact-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .contact-text {
+            flex: 2;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .contact-text h2 {
+            font-size: 1.5em;
+            letter-spacing: 2px;
+        }
+
+        .contact-text p {
+            font-size: 15px;
+            margin-top: 1px;
+        }
+
+        .contact-text p2 {
+            font-size: 13px;
+            margin-top: 1px;
+        }
+
+        .contact-image img {
+            width: 150px;
+            border-radius: 50%;
+        }
+        .highlight {
+            background-color: rgba(173, 216, 230, 0.3); /* 薄い青 */
+            padding: 0 5px; /* 文字の左右に少し余白を追加 */
+        }
+
+
+        form label {
+            font-size: 12px;
+            color: #fff;
+            font-weight: normal;
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        form input {
+            width: 10%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #b0c4de;
+            color: #333;
+        }
+
+        form input::placeholder,
+        form textarea::placeholder {
+            color: #666;
+        }
+
+        #subject {
+            width: 40%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #b0c4de;
+            color: #333;
+        }
+
+        button {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #34495e;
+            transform: scale(1.1);
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #2c3e50;
+            color: #fff;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            margin-top: 0;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        form labelmessage {
+            font-size: 12px;
+            color: #fff;
+            font-weight: normal;
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        form textarea {
+            width: 50%;
+            max-width: 400px;
+            height: 30px;
+            padding: 50px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #b0c4de;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            .contact-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-image img {
+                margin-bottom: 20px;
+            }
+
+            nav {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ishida Music Lounge</h1>
+    </header>
+
+    <nav>
+        <a href="#profile">プロフィール</a>
+        <a href="#topics-section">FANBOX</a>
+        <a href="#contact">楽曲制作等のお問い合わせ</a>
+    </nav>
+
+    <!-- Swiper スライドショー -->
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+
+            <!-- youtube埋め込みスライド -->
+            <div class="swiper-slide">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/XgM6GtHD3ig?si=vA7Z-Vn2V2Du0HRR&amp;start=19" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <!-- youtube埋め込みスライド -->
+            <div class="swiper-slide">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/XsaHCe73H0o?si=zVoCNetUhMQWpC4t&amp;start=5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <!-- youtube埋め込みスライド -->
+            <div class="swiper-slide">
+                <iframe src="https://www.youtube.com/embed/1KTBEvW8LMc?si=XuxunhSWMw6Mg_ba" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <!-- youtube埋め込みスライド -->
+            <div class="swiper-slide">
+                <iframe src="https://www.youtube.com/embed/n_K9PfgQQko?si=bm6LjQMTamAKEZh4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+        </div>
+        <!-- スライドのページインジケーター -->
+        <div class="swiper-pagination"></div>
+        <!-- スライドのナビゲーションボタン -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+
+    <!-- プロフィールセクション -->
+    <section id="profile" class="profile-section">
+        <div class="profile-text">
+            <h2>プロフィール</h2>
+            <p>イシダ テツヒロ</p>
+            <p>1997年11月10日生まれ。</p>
+            <p>作編曲家、Track maker。</p>
+            <p>音楽専門学校を卒業後、作編曲家として活動。</p>
+            <p>Youtubeでは自身のオリジナル曲や音楽制作に役立つチュートリアル動画を投稿。</p>
+            <p>ダンスミュージックを主体として作編曲を手掛けている。</p>
+        </div>
+        <div class="sns-links">
+            <h3 class="links-title">LINK</h3>
+            <a href="https://twitter.com/tetsuhiro4444">X(旧Twitter)</a>
+            <a href="https://www.instagram.com/ishida_tetsuhiro">Instagram</a>
+            <a href="https://www.youtube.com/channel/UCpI9-Zb9cgYSUks_iouuA_w/featured">YouTube</a>
+            <a href="https://tetsuhiro.booth.pm/">Booth</a>
+            <a href="https://ishidamusic.fanbox.cc/">FANBOX</a>
+        </div>
+    </section>
+
+    <!-- 新しいセクション -->
+    <section id="topics-section" class="topics-section">
+        <h2 class="topics-title">Ishida Studioの紹介(FANBOX)</h2>
+        <div class="topics-container">
+            <div class="topic">
+                <h3>Ishida Studioとは</h3>
+                <p>作編曲家、Track makerのイシダテツヒロによるコミュニティ。Ishida Studioでは僕の音楽制作の全てをここでお教えします。音楽を作ってみたい、トラックのクオリティを上げたい。音楽が大好きな仲間が集まり楽しく制作する事ができます。初心者〜上級者に役立つコンテンツです。</p>
+                <p>以下に、Ishida Studioのトラック制作に役立つコンテンツを紹介します</p>
+            </div>
+            <div class="topic">
+                <h3>コンテンツ 1：Project File (Ableton Live) のダウンロード</h3>
+                <p>僕がYoutube動画で作ったTrackがダウンロードできます（【FANBOX Project File】と書いてある物）</p>
+            </div>
+            <div class="topic">
+                <h3>コンテンツ 2：FANBOX限定のSample Pack & Synthe Presetsのダウンロード</h3>
+                <p>不定期にSample Pack と Synthe PresetsをFANBOX限定で配布します。</p>
+            </div>
+            <div class="topic">
+                <h3>コンテンツ 3：FANBOX限定のTrack制作のチュートリアル動画</h3>
+                <p>FANBOX限定で僕が作ったTrackの解説動画が見れます。Youtube動画よりさらに詳しく解説します。</p>
+            </div>
+            <div class="topic">
+                <h3>コンテンツ 4：音楽制作に関する記事</h3>
+                <p>音楽制作に役立つ記事や、機材紹介、ブログなどを見る事ができます。</p>
+            </div>
+            <div class="topic">
+                <h3>コンテンツ 5：Ishida StudioのDiscord Serverへ招待</h3>
+                <p>Discordサーバーへ招待します。クリエイターが交流できる場を作りました。お互いに学び合ったり、制作の相談をしたりすることができます。</p>
+            </div>
+            <div class="topic">
+                <h3>皆さんに喜んで貰えるように全力でサポートします！</h3>
+                <p>サポートしてもらえたらすごく嬉しいです！ここだけの情報や限定コンテンツをお届けしており、もっと良いものを作れるよう頑張ります。ぜひよろしくお願いします！</p>
+                <a href="https://ishidamusic.fanbox.cc/plans" target="_blank">FANBOXこちら</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 問い合わせセクション -->
+    <section id="contact" class="contact-section">
+        <div class="contact-text">
+            <h2>楽曲制作等のお問い合わせ(CONTACT)</h2>
+            <p>下記フォームより必要事項を記入いただきSendボタンを押してください。(Please fill in the necessary information on the form and press the send button.)</p>
+            <p><span class="highlight">イシダ テツヒロができること</span></p>
+            <p><span class="highlight">・インスト曲の楽曲制作</span></p>
+            <p><span class="highlight">・歌物の作曲、編曲</span></p>
+
+            <form action="/send" method="post">
+                <label for="name">お名前(Name):</label>
+                <input type="text" id="name" name="name" required>
+                <br>
+                <label for="email">メールアドレス(Mail)※必須:</label>
+                <input type="email" id="email" name="email" required>
+                <br>
+                <label for="budget">ご予算(Budget):</label>
+                <input type="text" id="budget" name="budget" required>
+                <br>
+                <label for="subject">題名(Title):</label>
+                <input type="text" id="subject" name="subject" required>
+                <br>
+                <labelmessage for="message">メッセージ(Message):</labelmessage>
+                <textarea id="message" name="message" required></textarea>
+                <br>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        <div class="contact-image">
+            <img src="C:\Users\rukin\Desktop\ギター.jpeg" alt="Contact Image" style="width: 150px; border-radius: 50%;">
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>&copy; 2024 Ishida Music Lounge . All Rights Reserved.</p>
+    </footer>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Swiperの初期化 -->
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            centeredSlides: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                }
+            }
+        });
+
+        window.addEventListener('scroll', function() {
+            var profileSection = document.querySelector('.profile-section');
+            var contactSection = document.querySelector('.contact-section');
+            var sectionPositionProfile = profileSection.getBoundingClientRect().top;
+            var sectionPositionContact = contactSection.getBoundingClientRect().top;
+            var screenPosition = window.innerHeight / 1.5;
+
+            if (sectionPositionProfile < screenPosition) {
+                profileSection.classList.add('visible');
+            }
+
+            if (sectionPositionContact < screenPosition) {
+                contactSection.classList.add('visible');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const topicsSection = document.querySelector('.topics-section');
+            const topicsTitle = document.querySelector('.topics-title');
+            const topics = document.querySelectorAll('.topic');
+
+            function checkScroll() {
+                const triggerBottom = window.innerHeight / 5 * 4;
+                const sectionTop = topicsSection.getBoundingClientRect().top;
+
+                if (sectionTop < triggerBottom) {
+                    topicsTitle.classList.add('visible');
+                    topics.forEach((topic, index) => {
+                        setTimeout(() => {
+                            topic.classList.add('visible');
+                        }, index * 200);
+                    });
+                    window.removeEventListener('scroll', checkScroll);
+                }
+            }
+
+            window.addEventListener('scroll', checkScroll);
+            checkScroll();
+        });
+    </script>
+</body>
+</html>
